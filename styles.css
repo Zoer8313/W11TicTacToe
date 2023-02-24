@@ -1,0 +1,34 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color:orangered;
+}
+
+h1 {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 300%;
+}
+
+#game-space {
+    display: grid;
+    grid-template-columns: 125px 125px 125px;
+    grid-template-rows: 125px 125px 125px;
+    cursor: crosshair;
+}
+
+.square {
+    font-size: 3em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+}
+
+.border-right {
+    border-right: 0.5em solid black;
+}
+
+.border-bottom {
+    border-bottom: 0.5em solid black;
+}
