@@ -11,7 +11,6 @@
 let gameSpace = $("#game-space");
 const button = document.getElementById("button");//just cuz there's only 1
 button.addEventListener("click", buttonClick);
-let activeGame = true;
 let gameBoard = ["", "", "", "", "", "", "", "", ""];
 let wonRound = false;
 
@@ -35,12 +34,12 @@ function squareClick(squareEvent) {
     squarePlayed(clickedSquare, clickedSquareIndex);
     checkWinner();
     switchPlayer();
-}
 
 function squarePlayed(clickedSquare, clickedSquareIndex) {
     gameBoard[clickedSquareIndex] = currentPlayer;
     clickedSquare.innerHTML = currentPlayer;
     //console.log(gameBoard); loved seeing this one
+}
 }
 
 function switchPlayer() {
@@ -79,24 +78,30 @@ function checkWinner() {
         if (x != null && x === y && x===z) {
             alert(currentPlayer + " has won the game!");
             wonRound = true;
-            activeGame = false;
             return;//keeps allowing me to click on board after someone's already won?
         }
         //check for draw here i reckon
         if (gameBoard.every((square) => square != "")) {
             alert("It's a draw!");
-            activeGame = false;
             return;
         }
         }
     }
 
 
-
 function buttonClick() {//when i hit this button, it just alerts me that theres a draw??
     gameBoard.fill(null);
     console.log(gameBoard);
     squares.forEach((square) => square.innerText = (""));
-    activeGame = true;
     currentPlayer = playerX;
 }
+
+/*issues:
+
+-i never made like a "play game" function, and when i try to screw around
+    and make one, my whole game just breaks :'( 
+-game recognizes when someone wins, but then allows for further game play
+-button wipes board and sets array values back to null, but won't let you
+    replay w/o refreshing the whole page.
+        
+*/
