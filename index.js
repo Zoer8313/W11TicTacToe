@@ -8,7 +8,7 @@
 //if theres a winner, change announcement XX
 //functioning play again button that wipes board & resets new game
 
-let gameSpace = $("#game-space");
+let gameSpace = document.getElementById("#game-space");
 const button = document.getElementById("button");//just cuz there's only 1
 button.addEventListener("click", buttonClick);
 let gameBoard = ["", "", "", "", "", "", "", "", ""];
@@ -22,7 +22,23 @@ let turn = document.getElementById("turn");
 let squares = Array.from(document.getElementsByClassName("square"));
 //console.log(squares);
 
-squares.forEach(square => square.addEventListener("click", squareClick, {once : true}));
+function playGame() {
+    console.log("Game is playing");
+    squares.forEach((square) => {
+        console.log("For each");
+        square.innerText = "";
+        //wonRound === true ? turn.innerHTML = "" : turn;
+        square.addEventListener("click", squareClick, {once : true});
+    })
+    gameBoard = ["", "", "", "", "", "", "", "", ""];
+    currentPlayer = playerX;
+    turn.innerText = playerX;
+    wonRound = false;
+    console.log(gameBoard);
+    //turn.innerHTML = "";
+}
+
+//squares.forEach(square => square.addEventListener("click", squareClick, {once : true}));
 
 function squareClick(squareEvent) {
     const clickedSquare = squareEvent.target;
@@ -64,7 +80,6 @@ const winningCombos = [
 
 
 function checkWinner() {
-    let wonRound = false;
     for (let i = 0; i <= 7; i++) {//loop through all 8 winning combos
         let winningCombo = winningCombos[i];
         let x = gameBoard[winningCombo[0]];
@@ -78,23 +93,33 @@ function checkWinner() {
         if (x != null && x === y && x===z) {
             alert(currentPlayer + " has won the game!");
             wonRound = true;
+            turn.innerText = "";
+            squares.forEach((square) => {
+                square.removeEventListener("click", squareClick)
+            })
+            console.log(gameBoard);
             return;//keeps allowing me to click on board after someone's already won?
         }
-        //check for draw here i reckon
+        }
+
         if (gameBoard.every((square) => square != "")) {
             alert("It's a draw!");
+            wonRound = true;
             return;
-        }
         }
     }
 
 
 function buttonClick() {//when i hit this button, it just alerts me that theres a draw??
-    gameBoard.fill(null);
+   /* gameBoard.fill(null);
     console.log(gameBoard);
     squares.forEach((square) => square.innerText = (""));
-    currentPlayer = playerX;
+    currentPlayer = playerX;*/
+    playGame();
 }
+
+playGame();
+
 
 /*issues:
 
