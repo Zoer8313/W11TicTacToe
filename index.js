@@ -6,13 +6,14 @@
 //check for a winner each round XX
 //be able to tell if there's a draw XX
 //if theres a winner, change announcement XX
-//functioning play again button that wipes board & resets new game
+//functioning play again button that wipes board & resets new game XX
 
 let gameSpace = $("#game-space");
 const button = document.getElementById("button");//just cuz there's only 1
 button.addEventListener("click", buttonClick);
 let gameBoard = ["", "", "", "", "", "", "", "", ""];
 let wonRound = false;
+let winnerAnnouncement = $("#winner");
 
 let playerX = "X";
 let playerO = "O";
@@ -22,11 +23,20 @@ let turn = document.getElementById("turn");
 let squares = Array.from(document.getElementsByClassName("square"));
 //console.log(squares);
 
-squares.forEach(square => square.addEventListener("click", squareClick, {once : true}));
+function playGame() {
+    squares.forEach((square) => {
+        square.innerText = "";
+        square.addEventListener("click", squareClick, {once : true});
+    })
+    gameBoard = ["", "", "", "", "", "", "", "", ""];
+    currentPlayer = playerX;
+    turn.innerText = playerX;
+    wonRound = false;
+}
 
 function squareClick(squareEvent) {
     const clickedSquare = squareEvent.target;
-    const clickedSquareIndex = parseInt(
+    const clickedSquareIndex = parseInt(//https://www.w3schools.com/jsref/jsref_parseint.asp 
         clickedSquare.getAttribute("data-index")
     );
     //console.log(clickedSquareIndex);
@@ -44,10 +54,12 @@ function squarePlayed(clickedSquare, clickedSquareIndex) {
 
 function switchPlayer() {
     currentPlayer = currentPlayer === playerX ? playerO : playerX;//https://www.w3schools.com/jsref/jsref_operators.asp
-    if (playerX === currentPlayer) {
+    if (playerX === currentPlayer && wonRound === false) {
         turn.innerText = "Player X's turn!"
-    } else {
+    } else if (playerO === currentPlayer && wonRound === false) {
         turn.innerText = "Player O's turn!"
+    } else {
+        turn.innerText = "";
     }
 }
 
@@ -64,7 +76,6 @@ const winningCombos = [
 
 
 function checkWinner() {
-    let wonRound = false;
     for (let i = 0; i <= 7; i++) {//loop through all 8 winning combos
         let winningCombo = winningCombos[i];
         let x = gameBoard[winningCombo[0]];
@@ -76,32 +87,29 @@ function checkWinner() {
         }
 
         if (x != null && x === y && x===z) {
-            alert(currentPlayer + " has won the game!");
+            //winnerAnnouncement.innerHTML = `${currentPlayer} has won the game!`
+            alert(`${currentPlayer} has won the game!`);
+            
             wonRound = true;
+            squares.forEach((square) => {
+                square.removeEventListener("click", squareClick)
+            })
+            console.log(gameBoard);
             return;//keeps allowing me to click on board after someone's already won?
         }
+    }
         //check for draw here i reckon
         if (gameBoard.every((square) => square != "")) {
             alert("It's a draw!");
+            wonRound = true;
+            console.log(gameBoard);
             return;
         }
         }
-    }
 
 
 function buttonClick() {//when i hit this button, it just alerts me that theres a draw??
-    gameBoard.fill(null);
-    console.log(gameBoard);
-    squares.forEach((square) => square.innerText = (""));
-    currentPlayer = playerX;
+    playGame();
 }
 
-/*issues:
-
--i never made like a "play game" function, and when i try to screw around
-    and make one, my whole game just breaks :'( 
--game recognizes when someone wins, but then allows for further game play
--button wipes board and sets array values back to null, but won't let you
-    replay w/o refreshing the whole page.
-        
-*/
+playGame();
