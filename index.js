@@ -8,7 +8,7 @@
 //if theres a winner, change announcement XX
 //functioning play again button that wipes board & resets new game XX
 
-let gameSpace = $("#game-space");
+let gameSpace = document.getElementById("#game-space");
 const button = document.getElementById("button");//just cuz there's only 1
 button.addEventListener("click", buttonClick);
 let gameBoard = ["", "", "", "", "", "", "", "", ""];
@@ -23,16 +23,7 @@ let turn = document.getElementById("turn");
 let squares = Array.from(document.getElementsByClassName("square"));
 //console.log(squares);
 
-function playGame() {
-    squares.forEach((square) => {
-        square.innerText = "";
-        square.addEventListener("click", squareClick, {once : true});
-    })
-    gameBoard = ["", "", "", "", "", "", "", "", ""];
-    currentPlayer = playerX;
-    turn.innerText = playerX;
-    wonRound = false;
-}
+squares.forEach(square => square.addEventListener("click", squareClick, {once : true}));
 
 function squareClick(squareEvent) {
     const clickedSquare = squareEvent.target;
@@ -91,25 +82,25 @@ function checkWinner() {
             alert(`${currentPlayer} has won the game!`);
             
             wonRound = true;
-            squares.forEach((square) => {
-                square.removeEventListener("click", squareClick)
-            })
-            console.log(gameBoard);
             return;//keeps allowing me to click on board after someone's already won?
         }
-    }
         //check for draw here i reckon
         if (gameBoard.every((square) => square != "")) {
             alert("It's a draw!");
-            wonRound = true;
-            console.log(gameBoard);
             return;
         }
         }
+    }
 
 
 function buttonClick() {//when i hit this button, it just alerts me that theres a draw??
-    playGame();
+    gameBoard.fill(null);
+    console.log(gameBoard);
+    squares.forEach((square) => square.innerText = (""));
+    currentPlayer = playerX;
 }
+
+playGame();
+
 
 playGame();
