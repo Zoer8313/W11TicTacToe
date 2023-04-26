@@ -8,7 +8,7 @@
 //if theres a winner, change announcement XX
 //functioning play again button that wipes board & resets new game XX
 
-let gameSpace = $("#game-space");
+let gameSpace = document.getElementById("#game-space");
 const button = document.getElementById("button");//just cuz there's only 1
 button.addEventListener("click", buttonClick);
 let gameBoard = ["", "", "", "", "", "", "", "", ""];
